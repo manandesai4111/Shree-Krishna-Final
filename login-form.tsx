@@ -3,40 +3,14 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { ArrowRight } from "lucide-react";
-import { useState } from "react";
 import { Button } from "@/components/ui/button";
 
 export function LoginForm() {
   const router = useRouter();
-  const [error, setError] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
 
-  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+  function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    setError("");
-    setIsLoading(true);
-
-    const formData = new FormData(event.currentTarget);
-    const response = await fetch("/api/auth/login", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        email: formData.get("email"),
-        password: formData.get("password")
-      })
-    });
-
-    setIsLoading(false);
-
-    if (!response.ok) {
-      setError("Please use the demo email and password shown on this page.");
-      return;
-    }
-
     router.push("/dashboard");
-    router.refresh();
   }
 
   return (
@@ -68,10 +42,8 @@ export function LoginForm() {
         </div>
       </div>
 
-      {error && <p className="mt-4 rounded-md bg-neutral-100 p-3 text-sm text-neutral-700">{error}</p>}
-
-      <Button className="mt-5 w-full" type="submit" disabled={isLoading}>
-        {isLoading ? "Logging in..." : "Login"}
+      <Button className="mt-5 w-full" type="submit">
+        Login
         <ArrowRight className="h-4 w-4" />
       </Button>
 
